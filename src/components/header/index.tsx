@@ -8,7 +8,7 @@ import ThemeButton from "../elements/button";
 const Header = () => {
   return (
     <HeaderContainer>
-      <Navbar>
+      <Navbar className="navbar">
         <Container fluid>
           <Navbar.Brand href="#home">Pal's Parking</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
