@@ -7,6 +7,7 @@ import { APIProvider } from "@vis.gl/react-google-maps";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Filters from "./filters";
+import ThemeButton from "../elements/button";
 
 const SearchBar = () => {
   const [selectedPlace, setSelectedPlace] =
@@ -23,24 +24,22 @@ const SearchBar = () => {
 
   return (
     <>
-      <SearchBarContainer className="my-3 p-2 d-flex justify-content-center align-items-center gap-3">
+      <SearchBarContainer className="my-3 d-flex justify-content-center align-items-center gap-3">
         <APIProvider apiKey={"AIzaSyBnW5jE0cIHXHRRdIJn3uMxuU3OLnyGV-I"}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
+          <div className="google-places-autocomplete-wrapper">
             <GooglePlacesAutocomplete
               apiKey={"AIzaSyBnW5jE0cIHXHRRdIJn3uMxuU3OLnyGV-I"}
               onPlaceSelect={handlePlaceSelect}
             />
           </div>
         </APIProvider>
-        <CustomDatePicker />
-        <span className="material-icons">arrow_forward</span>
-        <CustomDatePicker />
+        <div className="datepickers-wrapper">
+          <CustomDatePicker />
+          <div className="d-flex justify-content-center align-items-center">
+            <span className="material-icons mx-2">arrow_forward</span>
+          </div>
+          <CustomDatePicker />
+        </div>
         <div className="position-relative">
           <Button
             variant="light"
@@ -56,9 +55,12 @@ const SearchBar = () => {
             />
           )}
         </div>
-        <Button onClick={() => console.log("Searching for:", selectedPlace)}>
-          Search
-        </Button>
+        <ThemeButton
+          onClick={() => console.log("Searching for:", selectedPlace)}
+          className="search-button"
+        >
+          <span className="material-icons">search</span>
+        </ThemeButton>
       </SearchBarContainer>
     </>
   );

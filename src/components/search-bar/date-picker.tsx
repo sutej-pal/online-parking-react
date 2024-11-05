@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 export const CustomDatePicker = () => {
     const [startDate, setStartDate] = useState(new Date());
     return (
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className='custom-datepicker'>
             <DatePicker
                 selected={startDate}
                 onChange={(date) => date && setStartDate(date)}

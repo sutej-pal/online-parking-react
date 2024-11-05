@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: "Open Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -33,4 +33,39 @@ body {
 
   /* Support for IE. */
   font-feature-settings: 'liga';
+}
+
+.pac-container {
+  width: 300px !important;
+  margin-top: 10px;
+  border-radius: 4px;
+  /* box-shadow: none; */
+  border-top: none;
+}
+
+.pac-container .pac-item {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.pac-container .pac-item .pac-item-query {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.pac-container .pac-item .pac-item-query .pac-matched {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pac-container .pac-item:first-child {
+  border-top: none;
+}
+
+.pac-container .pac-item .pac-icon {
+  display: none;
+}
+
+.pac-container::after {
+  display: none;
 }

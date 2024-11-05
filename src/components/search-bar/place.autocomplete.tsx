@@ -1,43 +1,63 @@
-import { useEffect, useRef, useState } from 'react';
-import { APIProvider, useMapsLibrary } from '@vis.gl/react-google-maps';
-import Button from 'react-bootstrap/Button';
+import { useEffect, useRef, useState } from "react";
+import { APIProvider, useMapsLibrary } from "@vis.gl/react-google-maps";
+import Button from "react-bootstrap/Button";
 
 interface GooglePlacesAutocompleteProps {
-    apiKey: string;
-    onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
+  apiKey: string;
+  onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
 }
 
-export const GooglePlacesAutocomplete = ({ apiKey, onPlaceSelect }: GooglePlacesAutocompleteProps) => {
-    const [placeAutocomplete, setPlaceAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
-    const places = useMapsLibrary('places');  // Loads the Places library
+export const GooglePlacesAutocomplete = ({
+  apiKey,
+  onPlaceSelect,
+}: GooglePlacesAutocompleteProps) => {
+  const [placeAutocomplete, setPlaceAutocomplete] =
+    useState<google.maps.places.Autocomplete | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const places = useMapsLibrary("places"); // Loads the Places library
 
-    useEffect(() => {
-        if (!places || !inputRef.current) return;
+  useEffect(() => {
+    if (!places || !inputRef.current) return;
 
-        const options = {
-            fields: ['geometry', 'name', 'formatted_address'],
-        };
+    const center = { lat: 50.064192, lng: -130.605469 };
+    // Create a bounding box with sides ~10km away from the center point
+    const defaultBounds = {
+      north: center.lat + 0.1,
+      south: center.lat - 0.1,
+      east: center.lng + 0.1,
+      west: center.lng - 0.1,
+    };
 
-        const autocomplete = new places.Autocomplete(inputRef.current, options);
-        setPlaceAutocomplete(autocomplete);
+    const options = {
+      componentRestrictions: { country: "in" },
+      fields: ["address_components", "geometry", "icon", "name"],
+      strictBounds: false,
+    };
 
-        autocomplete.addListener('place_changed', () => {
-            const place = autocomplete.getPlace();
-            onPlaceSelect(place);
-        });
+    const autocomplete = new places.Autocomplete(inputRef.current, options);
+    setPlaceAutocomplete(autocomplete);
 
-        return () => {
-            // Cleanup on component unmount
-            if (autocomplete) {
-                google.maps.event.clearInstanceListeners(autocomplete);
-            }
-        };
-    }, [places, onPlaceSelect]);
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+      onPlaceSelect(place);
+    });
 
-    return (
-        <div className="autocomplete-container">
-            <input ref={inputRef} placeholder="Enter a location" />
-        </div>
-    );
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+      onPlaceSelect(place);
+    });
+
+    return () => {
+      // Cleanup on component unmount
+      if (autocomplete) {
+        google.maps.event.clearInstanceListeners(autocomplete);
+      }
+    };
+  }, [places, onPlaceSelect]);
+
+  return (
+    <div className="autocomplete-container">
+      <input ref={inputRef} placeholder="Enter a location" />
+    </div>
+  );
 };
